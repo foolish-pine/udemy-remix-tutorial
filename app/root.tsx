@@ -1,9 +1,11 @@
 import {
+  isRouteErrorResponse,
   Links,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useRouteError,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import MainNavigation from "~/components/MainNavigation";
@@ -16,6 +18,30 @@ export const links: LinksFunction = () => [
     href: styles,
   },
 ];
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <main className="error">
+        <p>
+          {error.status}: {error.statusText}
+        </p>
+        <p>{error.data.message}</p>
+      </main>
+    );
+  } else if (error instanceof Error) {
+    return (
+      <main className="error">
+        <h1>An error occurred!</h1>
+        <p>{error.message}</p>
+      </main>
+    );
+  } else {
+    return <h1>Unknown Error</h1>;
+  }
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (

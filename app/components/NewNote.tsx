@@ -1,17 +1,22 @@
 import { Form, useNavigation } from "@remix-run/react";
 import styles from "./NewNote.css?url";
 
+interface Props {
+  message: string;
+}
+
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
 }
 
-function NewNote() {
+function NewNote({ message }: Props) {
   const navigation = useNavigation();
 
   const isSubmitting = navigation.state === "submitting";
 
   return (
     <Form method="post" id="note-form">
+      <p>{message}</p>
       <p>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" name="title" required />
