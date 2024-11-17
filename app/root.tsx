@@ -2,6 +2,7 @@ import {
   isRouteErrorResponse,
   Links,
   Meta,
+  MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -11,6 +12,12 @@ import type { LinksFunction } from "@remix-run/node";
 import MainNavigation from "~/components/MainNavigation";
 
 import styles from "~/styles/main.css?url";
+
+export const meta: MetaFunction = () => [
+  {
+    title: "New Remix App",
+  },
+];
 
 export const links: LinksFunction = () => [
   {

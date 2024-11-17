@@ -1,13 +1,21 @@
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
 import {
   isRouteErrorResponse,
+  MetaFunction,
   useActionData,
   useLoaderData,
   useRouteError,
 } from "@remix-run/react";
 import NewNote, { links as newNoteLinks } from "~/components/NewNote";
 import NoteList, { links as noteListLinks } from "~/components/NoteList";
-import { getStoredNotes, storeNotes } from "~/data/notes";
+import { getStoredNotes, Note, storeNotes } from "~/data/notes";
+
+export const meta: MetaFunction = () => [
+  {
+    title: "All Notes",
+    description: "Manage your notes with ease.",
+  },
+];
 
 export function links() {
   return [...newNoteLinks(), ...noteListLinks()];
@@ -31,7 +39,7 @@ export async function loader() {
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const noteData = Object.fromEntries(formData);
+  const noteData = Object.fromEntries(formData) as Note;
 
   if ((noteData.title as string).trim().length < 5) {
     return {
